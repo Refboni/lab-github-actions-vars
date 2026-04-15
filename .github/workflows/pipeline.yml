@@ -1,0 +1,38 @@
+name: Laboratorio de Variaveis
+on: [push]
+
+env:
+  APP_NAME: SistemaIntegrado
+  APP_VERSION: 1.2.0
+
+jobs:
+  teste-escopos:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Passo 1: Definir Variavel de Step"
+        run: echo "Variavel definida no Step"
+        env:
+          STEP_TEMP: "Sou uma variavel temporaria"
+
+      - name: "Passo 2: Testar Escopos"
+        run: |
+          echo "Nome do App: $APP_NAME"
+          echo "Versao: $APP_VERSION"
+          echo "Variavel do Step Anterior: $STEP_TEMP"
+
+      - name: "Passo 3: Usar Contextos Padrao"
+        run: |
+          echo "Usuario que disparou: ${{ github.actor }}"
+          echo "Repositorio: ${{ github.repository }}"
+          echo "Sistema Operacional: ${{ runner.os }}"
+
+      - name: "Passo 4: Gerar Numero de Build Dinamico"
+        run: echo "BUILD_NUMBER=$RANDOM" >> $GITHUB_ENV
+
+      - name: "Passo 5: Usar Codigo Dinamico"
+        run: echo "O numero do build gerado foi $BUILD_NUMBER"
+
+      - name: "Passo 6: Acessar Dados do Repositorio"
+        run: |
+          echo "Conectando na URL: ${{ vars.URL_AMBIENTE }}"
+          echo "Usando o Token: ${{ secrets.API_TOKEN_PROD }}"
